@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1> 소개 페이지 </h1>
+<hr>
+<p> 나의 이름은 윤소윤 </p>
+<p> 나의 나이는 ??? </p>
+<a href="{% url 'articles:index' %}"> back </a>
+
+{% endblock %}
