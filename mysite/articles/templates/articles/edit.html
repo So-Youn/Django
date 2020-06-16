@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1> 글 수정하기 </h1>
+<form action="{% url 'articles:update' article.pk %}" method="POST">
+{% csrf_token %}
+<p>{{article.pk}}</p>
+<p><stroing>제목 : </stroing><input type="text" id="title" name ="title" value={{article.title}}></p>
+<p><stroing>내용 : </stroing><input type="text" id="content" name ="content" value={{article.content}}></p>
+<input type="submit" value="글 수정">
+</form>
+{% endblock %}

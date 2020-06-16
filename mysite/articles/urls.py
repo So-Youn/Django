@@ -8,4 +8,8 @@ urlpatterns = [
     path('new/', views.new, name="new"),
     path('create/', views.create, name="create"),
     path('introduce/', views.introduce, name="introduce"),
+    path('<int:article_pk>/', views.detail, name="detail"),
+    path('<int:delete_pk>/delete/', views.delete, name="delete"),
+    path('<int:article_pk>/edit/', views.edit, name="edit"),
+    path('<int:article_pk>/update/', views.update, name="update"),
 ]
