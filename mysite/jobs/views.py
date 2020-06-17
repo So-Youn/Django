@@ -15,7 +15,7 @@ def past_life(request):
         person.past_job = random.choice(job_past)
         person.save()
     else:
-        person = person[0]    
+        person = person[0]   
     context = {
         'person' : person
     }

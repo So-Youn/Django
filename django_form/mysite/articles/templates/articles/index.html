@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1> 메인 페이지입니다.</h1>
+
+<p>글 제목 </p>
+<hr>
+{% for article in articles %}
+<a href="{% url 'articles:detail' article.pk %}">{{article.title}}</a>
+<hr>
+{% endfor %}
+<a href="{% url 'articles:create' %}" class="btn btn-info"> 글 작성하기</a>
+{% endblock %}
