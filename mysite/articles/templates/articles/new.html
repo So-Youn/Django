@@ -5,9 +5,11 @@
 <form action="{% url 'articles:create' %}" method="POST">
   {% csrf_token %}
   <label for="name">제목 : </label>
-  <input type="text" id="name" name="title">
+  <input type="text" id="name" name="title" placeholder="내용을 입력해주세요"><br/>
   <label for="cnt">내용 : </label>
-  <input type="text" id="cnt" name="content">
+  <textarea name="content" id="cnt" cols="40" rows="10">
+    여기에 내용을 입력해 주세요.
+  </textarea>
 
   <input type="submit" value="글 작성">
 </form>

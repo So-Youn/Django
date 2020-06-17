@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>사용자 입력</h1>
+<form action="{% url 'jobs:past_life' %}" method="POST">
+  {% csrf_token %}
+  <label for="name"> 이름 : </label>
+  <input type="text" id="name" name="person_name" placeholder="이름 입력">
+  <input type="submit" class="btn btn-info" value="입력">
+</form>
+{% endblock %}

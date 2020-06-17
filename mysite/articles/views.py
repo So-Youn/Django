@@ -62,10 +62,11 @@ def detail(request,article_pk):
 # 3. 글 삭제 후, index page로 redirect
 # 4. 글 삭제를 위한 링크 detail에 작성
 def delete(request, delete_pk):
-    # post 방식 : request.method
     article = Article.objects.get(pk=delete_pk)
-    article.delete()
-    return redirect('articles:index')
+    if request.method == "POST":
+        article.delete()
+        return redirect('articles:index')
+    return redirect('articles:detail', delete_pk)
 
 # 1. 특정 글 수정을 위한 경로 생성
 # 1-1. /articles/1/edit/
@@ -89,7 +90,9 @@ def edit(request,article_pk):
 # 6-1. {% url 'articles:edit' article.pk %}
 def update(request,article_pk):
     article = Article.objects.get(pk=article_pk)
-    article.title = request.POST.get('title')
-    article.content = request.POST.get('content')
+    title = request.POST.get('title')
+    content = request.POST.get('content')
+    article.title = title
+    article.content = content
     article.save()
     return redirect('articles:detail',article_pk)

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block body %}
+<h2>당신의 전생은 ? </h2>
+<p> <strong>{{ person.name }}</strong>님의 전생은 <strong>{{ person.past_job }}</strong>입니다.</p><br>
+<a href="{% url 'jobs:index' %}">뒤로가기</a>
+{% endblock %}
