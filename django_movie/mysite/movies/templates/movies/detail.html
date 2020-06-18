@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block body %}
+<br>
+<div class="jumbotron">
+  <h1 class="display-4" style="font-weight: 600;"><{{movie.pk}}>{{movie.title}} ({{movie.title_en}})</h1>
+  <hr class="my-4">
+    <p class="lead"> <Strong>누적 관객 수 :</Strong> <strong>{{movie.audience}}</strong> 명 </p>
+    <p class="lead"> <Strong>개봉일 :</Strong> {{movie.open_date}}</p>
+    <p class="lead"> <Strong>장르 : </Strong>{{movie.genre}}</p>
+    <p class="lead"> <Strong>관람 등급 :</Strong> {{movie.watch_grade}}</p>
+    <p class="lead"> <Strong>평점 : </Strong>{{movie.score}}</p>
+    <img src = "{{movie.poster_url}}" width="300" height="300">
+    <hr class="my-4">
+  <p class="lead" style="text-align:justify;"> <Strong>영화 소개 : </Strong>{{movie.description}} </p>
+  <div style="float: right;">
+    <a href="{% url 'movies:index' %}" class="btn btn-info" style="width: 100px;">목록</a>
+    <a href="{% url 'movies:edit' movie.pk %}" class="btn btn-warning" style="width: 100px;" >수정</a>
+    <a href="{% url 'movies:delete' movie.pk %}" class="btn btn-danger" style="width: 100px;">삭제</a>
+  </div>
+</div>
+
+<br/><br/>
+{% endblock %}
