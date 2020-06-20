@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  {% if request.resolver_match.url_name == 'create' %}
+  <h1>글 생성</h1>
+  {% else %}
+  <h1>글 수정</h1>
+  {% endif %}
+  <hr>
+  <!-- action을 비워두면 현재 위치로 요청 
+       차이점 : method를 지정해줬다.
+       a tag : GET  -->
+
+  <form action="" method="POST">
+    {% csrf_token %}
+   <!-- views에서 context에 담아 넘겨준 form -->
+    {{ form }}
+    <input type="submit">
+  </form>
+</body>
+</html>

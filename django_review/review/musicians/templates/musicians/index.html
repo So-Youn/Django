@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index</title>
+</head>
+<body>
+    <h1> 메인 페이지 </h1>
+    <hr><hr>
+    <a  href="{% url 'musicians:create'%}" class="btn btn-info"> 생성 </a>
+    <ul>
+      {% for musician in musicians %}
+       <a href="{% url 'musicians:detail' musician.pk %}"><li> 이름 :  {{ musician.name }} 나이 : {{ musician.age }} </li></a>
+      {% endfor %}
+      </ul>
+</body>
+</html>

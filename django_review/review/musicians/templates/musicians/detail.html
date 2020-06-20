@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- musician은 결국 인스턴스다. -->
+  <h1>상세 페이지</h1>
+  <hr>
+  <!-- <h1> {{musician}} </h1> -->
+  <hr>
+  <!-- 각 변수에 접근할 수 있다. -->
+  <p>{{ musician.name }}</p>
+  <p>{{ musician.age }} </p>
+  <a href="{% url 'musicians:update' musician.pk %}">수정</a>
+  <a href="{% url 'musicians:delete' musician.pk %}">삭제</a>
+</body>
+</html>
