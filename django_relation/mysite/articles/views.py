@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 # DVDH
 # Django가 주는 views에서 쓸 decorators http를 위함
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from .models import Article, Comment
 from .forms import ArticleForm, CommentForm
+from IPython import embed # idex로 들어오면 embed 함수 실행
 
 # Create your views here.
 def index(request):
@@ -25,6 +27,7 @@ def detail(request, article_pk):
     }
     return render(request, 'articles/detail.html', context)
 
+@login_required
 def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST)
@@ -38,6 +41,7 @@ def create(request):
     }
     return render(request, 'articles/form.html', context)
 
+@login_required
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if request.method == "POST":
@@ -52,12 +56,12 @@ def update(request, article_pk):
     }
     return render(request, 'articles/form.html', context)
 
-def delete(request, article_pk):
-    article = get_object_or_404(Article, pk=article_pk)
-    if request.method == "POST":
+@login_required
+def delete(request, article_pk):   
+    if request.user.is_authenticated:
+        article = get_object_or_404(Article, pk=article_pk)
         article.delete()
-        return redirect('articles:index')
-    return redirect('articles:detail', article.pk)
+    return redirect('articles:index')
 
 
 # def comment_delete(request, article_pk, comment_pk):
@@ -66,30 +70,34 @@ def delete(request, article_pk):
 #     if request.method == "POST":
 #         comment.delete()
 #     return redirect('articles:detail', article_pk) # comment.article.pk - OK
+
+@login_required
 @require_POST
 def comment_delete(request, article_pk, comment_pk):    
     comment = get_object_or_404(Comment, pk=comment_pk) # Comment : model에서 정의한 class
     comment.delete()
     return redirect('articles:detail', article_pk) # comment.article.pk - OK
-    
+
+
+@require_POST
+@login_required
 def insert(request, article_pk):
     # article = Article.objects.get(pk=article_id)
     article = get_object_or_404(Article, pk = article_pk)
-    if request.method == "POST":
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)   # 이로서 접근 권한이 생김
-            # commit=False ?  생성은 하지만 DB에 반영은 하지 않는다 default는 True 
-            # comment = article.comment_set.all() 
-            #comment.article_id = article.pk 
-            comment.article = article
-            comment.save()
-            return redirect('articles:detail', article.pk)
-        else:
-            context = {
-                'comment_form': focomment_form,
-                'article' : article
-            }
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)   # 이로서 접근 권한이 생김
+        # commit=False ?  생성은 하지만 DB에 반영은 하지 않는다 default는 True 
+        # comment = article.comment_set.all() 
+        #comment.article_id = article.pk 
+        comment.article = article
+        comment.save()
+        return redirect('articles:detail', article.pk)
+    else:
+        context = {
+            'comment_form': focomment_form,
+            'article' : article
+        }
     return render(request, 'articles/detail.html', context)
 
 
