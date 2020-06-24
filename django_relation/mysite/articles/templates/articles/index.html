@@ -8,8 +8,9 @@
 <hr>
 {% for article in articles %}
  <p>{{ article.pk }}번째 글</p>
- <p>{{ article.title }} <a href="{% url 'articles:detail' article.pk %}">상세 보기</a></p>
- <p>댓글 {{ article.comment_set.all|length }} 개</p>
+ <p>{{ article.title }}</p>
+ <p>작성자 : {{ article.user.username }} </p>
+ <p><a href="{% url 'articles:detail' article.pk %}">상세 보기 </a> 댓글 {{ article.comment_set.all|length }} 개</p>
  
  <hr>
 {% endfor %}

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Article, Comment
 from .forms import ArticleForm, CommentForm
 from IPython import embed # idex로 들어오면 embed 함수 실행
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -30,10 +31,15 @@ def detail(request, article_pk):
 @login_required
 def create(request):
     if request.method == "POST":
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)  # request.POST : 사용자가 보낸 제목, 내용이 들어있음 -> 파일도 추가해주어야 한다.(request.FILES)
         if form.is_valid():
-            article = form.save()
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
+            messages.success(request, '게시글 작성 완료!')
             return redirect('articles:detail', article.pk)
+        else : 
+            messages.error(request, '잘못된 데이터 입력!')
     else:
         form = ArticleForm()
     context = {
@@ -44,24 +50,35 @@ def create(request):
 @login_required
 def update(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    if request.method == "POST":
-        form = ArticleForm(request.POST, instance=article)
-        if form.is_valid():
-            article = form.save()
-            return redirect('articles:detail', article.pk)
-    else:
-        form = ArticleForm(instance=article)
-    context = {
-        'form': form
-    }
-    return render(request, 'articles/form.html', context)
+    if article.user == request.user :
+        if request.method == "POST":
+            form = ArticleForm(request.POST, request.FILES, instance=article)
+            if form.is_valid():
+                article.user = request.user
+                article = form.save()
+                return redirect('articles:detail', article.pk)
+        else:
+            form = ArticleForm(instance=article)
+        context = {
+            'form': form
+        }
+        return render(request, 'articles/form.html', context)
+    else :
+        return redirect('articles:detail', article.pk)
 
+    
 @login_required
 def delete(request, article_pk):   
     if request.user.is_authenticated:
         article = get_object_or_404(Article, pk=article_pk)
-        article.delete()
-    return redirect('articles:index')
+        if article.user == request.user:
+            article.delete()
+            return redirect('articles:index')
+        else:
+            return redirect('articles:detail', article.pk)
+        return redirect('articles:index')
+        
+
 
 
 # def comment_delete(request, article_pk, comment_pk):
@@ -89,7 +106,8 @@ def insert(request, article_pk):
         comment = comment_form.save(commit=False)   # 이로서 접근 권한이 생김
         # commit=False ?  생성은 하지만 DB에 반영은 하지 않는다 default는 True 
         # comment = article.comment_set.all() 
-        #comment.article_id = article.pk 
+        #comment.article_id = article.pk
+        comment.user = request.user 
         comment.article = article
         comment.save()
         return redirect('articles:detail', article.pk)
