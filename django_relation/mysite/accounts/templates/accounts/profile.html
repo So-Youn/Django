@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1> {{ person.username }} </h1>
+<hr>
+{{ person.first_name }}
+{{ person.last_name }}
+{{ person.email }}
+
+{% for article in person.article_set.all %}
+{{ article.title }} / {{ article.content }} 
+{% endfor %}
+
+{% for comment in person.coment_set.all %}
+{{ comment.title }} / {{ comment.content }}
+{% empty %}
+<p> 댓글을 단 적이 없습니다.</p> 
+{% endfor %}
+
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">유저가 작성한 게시글</th>
+      <th scope="col">제목</th>
+      <th scope="col">내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">유저가 작성한 댓글</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+  </tbody>
+</table>
+<!-- 유저가 좋아요 누른 게시글 -->
+{% for like in person.like_articles.all %}
+{{ like.name }}
+{% empty %}
+<p> 좋아요를 누른 게시글이 없습니다. </p> 
+{% endfor %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

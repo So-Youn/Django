@@ -1,5 +1,6 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -7,7 +8,7 @@ from django.contrib.auth import logout as auth_logout
 # views.py 내 정의한 함수 login과 구분하기 위해 auth_log로 재 명명함
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .forms import CustomUserChangeForm 
+from .forms import CustomUserChangeForm ,CustomUserCreationForm
 from .forms import UserPassChangeForm
 
 def login(request):
@@ -35,14 +36,14 @@ def login(request):
 # Create your views here.
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST) # 사용자가 POST방식으로 보내온 정보를 담아서 form 생성
+        form = CustomUserCreationForm(request.POST) # 사용자가 POST방식으로 보내온 정보를 담아서 form 생성
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
             return redirect("accounts:login")
 
     else:
-        form = UserCreationForm() # 인스턴스화
+        form = CustomUserCreationForm() # 인스턴스화
     context = {
         'form' : form
     }
@@ -86,3 +87,10 @@ def password(request):
         'form' : form
     }
     return render(request, 'accounts/form.html', context)
+
+def profile(request, username):
+    person = get_object_or_404(get_user_model(), username=username)# 특정 유저 정보 받아오기
+    context={
+        'person' : person
+    }
+    return render(request, 'accounts/profile.html', context)

@@ -5,6 +5,13 @@
 
 <storing><<{{ article.pk }}>></strong>
 <p> 작성자 | {{article.user.username }}</p>
+
+{% if user in article.recommend_users.all %}
+<a href="{% url 'articles:recommend' article.pk %}">추천</a>
+{% else %}
+<a href="{% url 'articles:recommend' article.pk %}">추천 취소</a>
+{% endif %}
+
 <h1>{{ article.title }}</h1>
 <h4>{{ article.content }}</h4>
 
@@ -13,7 +20,7 @@
 {% else %}
 <img src="" alt="">
 {% endif %}
-
+{% include 'articles/_like.html' %}
 <hr>
 <form action="{% url 'articles:insert' article.pk %}" method="POST">
   {% csrf_token %}

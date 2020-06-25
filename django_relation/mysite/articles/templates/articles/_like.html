@@ -1,0 +1,10 @@
+{% if user in article.like_users.all %}
+<a href="{% url 'articles:like' article.pk %}"> <i class="fas fa-heart fa-lg text-danger"></i></a> {{ article.like_users.all|length }}
+{% else %}
+<a href="{% url 'articles:like' article.pk %}"><i class="far fa-heart fa-lg text-danger"></i> </a>{{ article.like_users.all|length }}
+{% endif %}
+{% if user in article.recommend_users.all %}
+<i class="fas fa-comments"></i> {{ article.comment_set.all|length }} <a href="{% url 'articles:recommend' article.pk %}"><i class="far fa-thumbs-up text-danger"></a></i> {{ article.recommend_users.all|length }}
+{% else %}
+<i class="fas fa-comments"></i> {{ article.comment_set.all|length }} <a href="{% url 'articles:recommend' article.pk %}"><i class="far fa-thumbs-up text-info"></a></i> {{ article.recommend_users.all|length }}
+{% endif %}

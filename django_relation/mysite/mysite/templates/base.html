@@ -1,39 +1,53 @@
 {% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% bootstrap_css %}
+  <script src="https://kit.fontawesome.com/7d9d1fe263.js" crossorigin="anonymous"></script>
   <title>Document</title>
 </head>
+
 <body>
   {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}" role="alert">
-      {{ message.message }}
-    </div>
-    {% endfor %}
-  {% endif %}
-
-  <div style="float: right;">
-    {% if user.is_authenticated %}
-    <p>{{ user.username }}님 환영합니다 <a href="{% url 'accounts:logout' %}">로그아웃</a> <a href="{% url 'accounts:update' %}">회원정보 수정</a></p>
-    <form action="{% url 'accounts:delete' %}" method="POST" class="btn btn-danger">
-      {% csrf_token %}
-      <input type="submit" value="회원 탈퇴">
-    </form>
-
-    {% else %}
-    <a href="{% url 'accounts:login' %}">로그인</a>
-    <a href="{% url 'accounts:signup' %}">회원가입</a>
-    {% endif %}
-    
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}" role="alert">
+    {{ message.message }}
   </div>
+  {% endfor %}
+  {% endif %}
+  <div style="float: right;">
+    <ul class="nav nav-pills">
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'accounts:profile' user.username %}" tabindex="-1" >{{ user.username }}님 환영합니다</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'accounts:update' %}">회원정보 수정</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'accounts:login' %}">로그인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'accounts:signup' %}">회원가입</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+  <br/><br/>
+
   <div class="container">
     {% block body %}
     {% endblock %}
   </div>
   {% bootstrap_javascript jquery='full' %}
 </body>
+
 </html>

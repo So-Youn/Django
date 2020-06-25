@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'modelrelation',
     'articles',
     'accounts',
     'django_extensions',
@@ -129,3 +130,7 @@ USE_TZ = True
 STATIC_URL = '/static/' # 장고에서 내부적으로 주어지는 경로
 MEDIA_URL = '/media/' #이미지 불러오는 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')# 파일이 저장되는 경로
+
+
+AUTH_USER_MODEL = 'accounts.User'
+

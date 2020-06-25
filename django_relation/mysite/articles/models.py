@@ -25,6 +25,15 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+     # 게시글 좋아요
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='like_articles',
+        blank=True) # 게시글에 좋아요 없는 유효성 검사 통과할 수 있도록 blank=True 걸어준다.
+    recommend_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='recommend_articles',
+        blank=True)
+
+
     # Article이 호출되었을 때 출력되는 내용 - magic method
     def __str__(self):
         return f'{self.pk}번째 글, {self.title}-{self.content}'
@@ -36,6 +45,8 @@ class Comment(models.Model):
     content = models.CharField(max_length=200)
     create_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+   
+    
 
     def __str__(self):
         return f'Article:{self.article},{self.pk}-{self.content}'
