@@ -22,7 +22,7 @@
       <th scope="row">{{ article.pk }}</th>
       <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a> 
       </td>
-      <td>{{ article.user.username }}</td>
+      <td><a href="{% url 'accounts:follow' article.user.pk %}">{{ article.user.username }}</a></td>
       <td>
         {% include 'articles/_like.html' %}
       </td>
@@ -31,5 +31,8 @@
   </tbody>
 </table>
  <hr>
-
+  {% for num in articles.paginator.page_range %}
+  <a href="{% url 'articles:index' %}?page={{ num }}">{{ num }}</a>
+  {% endfor %}
+  
 {% endblock %}

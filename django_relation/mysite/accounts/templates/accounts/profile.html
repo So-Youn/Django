@@ -1,10 +1,22 @@
 {% extends 'base.html' %}
 {% block body %}
 <h1> {{ person.username }} </h1>
+{% if user != person %}
+  {% if user in person.followers.all %}
+  <a href="{% url 'accounts:follow' person.pk %}"> <i class="fas fa-user-plus"> follow </i></a>  
+  {% else %}
+  <a href="{% url 'accounts:follow' person.pk %}"><i class="fas fa-handshake-slash"> cancel </i> </a> 
+  {% endif %}
+{% endif %}
 <hr>
 {{ person.first_name }}
 {{ person.last_name }}
 {{ person.email }}
+
+<!--person : 프로필이 생성될 때 보내진 값  (팔로우 되는 사람)
+    user : 로그인 되어 있는 사람
+      -->
+
 
 {% for article in person.article_set.all %}
 {{ article.title }} / {{ article.content }} 
